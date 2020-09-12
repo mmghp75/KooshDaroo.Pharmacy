@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ms="clr-namespace:KooshDaroo.Controls"
+             mc:Ignorable="d"
+             x:Class="KooshDaroo.Pharmacy.Views.MainPageTabbed">
+    <!--Pages can be added as references or inline-->
+    <ContentPage Title="نسخ جدید" x:Name="page01">
+        <ContentPage.Content>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label x:Name="lblHeader" Text="زمان ارسال نسخه   ==>   فاصله تا داروخانه" Grid.Row="0" BackgroundColor="Blue" FontSize="Title" FontAttributes="Bold" TextColor="Yellow" HorizontalOptions="FillAndExpand"/>
+                <ListView x:Name="lvPrescription" Grid.Row="1" ItemsSource="{Binding prescriptionList}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Margin="1" >
+                                    <Button Text="{Binding DateAndDistance}" ClassId="{Binding Tag}" HorizontalOptions="FillAndExpand" FontSize="Large" TextColor="Black" Clicked="ItemClicked"/>
+                                </StackLayout>
+                                <!--<ViewCell.ContextActions>
+                                <MenuItem Text="نمایش نسخه" x:Name="mnuShowPrescription"></MenuItem>
+                            </ViewCell.ContextActions>-->
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ContentPage.Content>
+    </ContentPage>
+    <ContentPage Title="نسخ معطله" x:Name="page02">
+        <ContentPage.Content>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="btnUnresponsedPrescribeS" Text="بارگزاری اطلاعات" Grid.Row="0" FontSize="Title" FontAttributes="Bold"/>
+                <Label x:Name="lblUnresponsedPrescribeS" Text="زمان ارسال نسخه   ==>   فاصله تا داروخانه" Grid.Row="1" BackgroundColor="Blue" FontSize="Title" FontAttributes="Bold" TextColor="Yellow" HorizontalOptions="FillAndExpand"/>
+                <ListView x:Name="lvUnresponsedPrescription" Grid.Row="2" ItemsSource="{Binding unresponsedPrescriptionList}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Margin="1" >
+                                    <Button Text="{Binding DateAndDistance}" ClassId="{Binding Tag}" HorizontalOptions="FillAndExpand" FontSize="Large" TextColor="Black" Clicked="unresponsedPrescriptionListItemClicked"/>
+                                </StackLayout>
+                                <!--<ViewCell.ContextActions>
+                                <MenuItem Text="نمایش نسخه" x:Name="mnuShowPrescription"></MenuItem>
+                            </ViewCell.ContextActions>-->
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ContentPage.Content>
+    </ContentPage>
+    <ContentPage Title="نسخ تأییدشده توسط بیمار"  x:Name="page03">
+        <Grid Padding="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Text="دارو تحویل بیمار شد" x:Name="accept" Grid.Row="0" Grid.ColumnSpan="3" Command="{Binding AcceptCommand}" FontSize="Large" />
+            <ListView ItemsSource="{Binding responseS}"
+                      ms:MultiSelectListView.IsMultiSelect="False"
+                      Grid.Row="1" Grid.ColumnSpan="3"
+                      ItemTapped="AcceptedPrescriptionClicked">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ms:SelectableViewCell>
+                            <!-- set the selected indicator (optional) -->
+                            <ms:SelectableViewCell.CheckView>
+                                <BoxView Color="Red" WidthRequest="12" HeightRequest="12" />
+                            </ms:SelectableViewCell.CheckView>
+
+                            <!-- set the content (optional) -->
+                            <ms:SelectableViewCell.DataView>
+                                <Label Text="{Binding DateAndDistance}"  HorizontalOptions="FillAndExpand" FontSize="Medium" TextColor="Black"/>
+                            </ms:SelectableViewCell.DataView>
+                        </ms:SelectableViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage>
+    <ContentPage Title="گزارش عملکرد" x:Name="page04">
+        <Grid Padding="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Text="ماه جاری" x:Name="thisMonth" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding thisMonthCommand}" FontSize="Large" />
+            <Button Text="ماه گذشته" x:Name="lastMonth" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding lastMonthCommand}" FontSize="Large" />
+            <Button Text="شش ماهه اخیر" x:Name="last6Month" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding last6MonthCommand}" FontSize="Large" />
+            <Button Text="سال اخیر" x:Name="lastYear" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding lastYearCommand}" FontSize="Large" />
+            <ListView ItemsSource="{Binding prescriptionS}"
+                      ms:MultiSelectListView.IsMultiSelect="False"
+                      Grid.Row="2" Grid.ColumnSpan="4">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ms:SelectableViewCell>
+                            <!-- set the selected indicator (optional) -->
+                            <ms:SelectableViewCell.CheckView>
+                                <BoxView Color="Red" WidthRequest="12" HeightRequest="12" />
+                            </ms:SelectableViewCell.CheckView>
+
+                            <!-- set the content (optional) -->
+                            <ms:SelectableViewCell.DataView>
+                                <Label Text="{Binding DateAndDistance}"  HorizontalOptions="FillAndExpand" FontSize="Medium" TextColor="Black"/>
+                            </ms:SelectableViewCell.DataView>
+                        </ms:SelectableViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage>
+</TabbedPage>
